@@ -13,8 +13,8 @@ return new class extends Migration {
 
         Schema::create('secteur_metiers', function (Blueprint $table) {
             $table->id('Id_Secteur_Metier');
-            $table->string('icone', 50)->nullable();
-            $table->string('titre', 50);
+            $table->string('icone')->nullable();
+            $table->string('titre');
             $table->text('description')->nullable();
             $table->timestamps();
         });

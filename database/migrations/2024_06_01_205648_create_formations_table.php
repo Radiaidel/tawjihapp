@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('formations', function (Blueprint $table) {
             $table->id('Id_Formation');
-            $table->string('titre', 50);
+            $table->string('titre');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('Id_Secteur_Metier');
             $table->foreign('Id_Secteur_Metier')->references('Id_Secteur_Metier')->on('secteur_metiers')->onDelete('cascade');

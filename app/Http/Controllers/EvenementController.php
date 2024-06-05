@@ -18,8 +18,8 @@ class EvenementController extends Controller
         $validatedData = $request->validate([
             'titre' => 'required|string|max:50',
             'description' => 'nullable|string',
-            'date_heure' => 'required|date',
-            'adresse' => 'required|string|max:50',
+            'date_heure' => 'required',
+            'adresse' => 'required|string',
         ]);
 
         $evenement = Evenement::create($validatedData);

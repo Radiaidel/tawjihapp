@@ -40,6 +40,7 @@ use App\Http\Controllers\ReserverController;
 use App\Http\Controllers\ReponseController;
 use App\Http\Controllers\ResultatController;
 
+
 Route::apiResource('etablissements', EtablissementController::class);
 Route::apiResource('utilisateurs', UtilisateurController::class);
 Route::apiResource('diplomes', DiplomeController::class);

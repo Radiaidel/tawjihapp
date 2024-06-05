@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('diplomes', function (Blueprint $table) {
             $table->id('Id_Diplome');
-            $table->string('titre', 50);
-            $table->string('duree', 50);
-            $table->string('niveau_etudes', 50);
+            $table->string('titre');
+            $table->string('duree');
+            $table->string('niveau_etudes');
             $table->timestamps();
         });
     }

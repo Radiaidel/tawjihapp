@@ -18,7 +18,6 @@ class ActualiteController extends Controller
         $validatedData = $request->validate([
             'titre' => 'required|string|max:50',
             'contenu' => 'required|string',
-            'date_publication' => 'required|date',
         ]);
 
         $actualite = Actualite::create($validatedData);
@@ -35,11 +34,14 @@ class ActualiteController extends Controller
         $validatedData = $request->validate([
             'titre' => 'sometimes|required|string|max:50',
             'contenu' => 'required|string',
-            'date_publication' => 'required|date',
         ]);
 
         $actualite->update($validatedData);
-        return response()->json(['message' => 'Actualite updated successfully', 'actualite' => $actualite]);
+        return response()->json(['message
+        
+        
+        
+        ' => 'Actualite updated successfully', 'actualite' => $actualite]);
     }
 
     public function destroy(Actualite $actualite)

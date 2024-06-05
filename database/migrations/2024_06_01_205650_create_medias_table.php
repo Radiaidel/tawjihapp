@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {   Schema::create('medias', function (Blueprint $table) {
         $table->id('Id_Media');
-        $table->string('path', 50);
+        $table->string('path');
         $table->enum('type', ['video', 'image', 'document']);
         $table->unsignedBigInteger('Id_Actualite')->nullable();
         $table->unsignedBigInteger('Id_Etablissemnt')->nullable();

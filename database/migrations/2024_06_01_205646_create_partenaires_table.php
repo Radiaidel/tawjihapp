@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('partenaires', function (Blueprint $table) {
             $table->id('Id_Partenaire');
             $table->dateTime('date_creation');
-            $table->enum('statut', ['public', 'privé', 'semi-public']);
             $table->unsignedBigInteger('Id_Utilisateur')->unique();
             $table->foreign('Id_Utilisateur')->references('Id_Utilisateur')->on('utilisateurs')->onDelete('cascade');
             $table->timestamps();

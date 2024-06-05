@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('etablissemnts', function (Blueprint $table) {
             $table->id('Id_Etablissemnt');
-            $table->string('logo', 50)->nullable();
-            $table->string('nom', 50);
+            $table->string('logo')->nullable();
+            $table->string('nom');
             $table->text('description')->nullable();
             $table->enum('type', ['public', 'privé', 'semi-public']);
-            $table->string('adresse', 50);
-            $table->string('ville', 50);
-            $table->string('telephone', 50);
-            $table->string('fax', 50)->nullable();
-            $table->string('email', 50)->unique();
-            $table->string('instagram_url', 50)->nullable();
-            $table->string('facebook_url', 50)->nullable();
-            $table->string('whatsapp_url', 50)->nullable();
+            $table->string('adresse');
+            $table->string('ville');
+            $table->string('telephone');
+            $table->string('fax')->nullable();
+            $table->string('email')->unique();
+            $table->string('instagram_url')->nullable();
+            $table->string('facebook_url')->nullable();
+            $table->string('whatsapp_url')->nullable();
             $table->timestamps();
         });
     }

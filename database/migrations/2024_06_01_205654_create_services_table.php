@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id('Id_Service');
-            $table->string('titre', 50);
+            $table->string('titre');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('Id_Categorie_Service');
             $table->unsignedBigInteger('Id_Partenaire');
