@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Reponse;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\StoreReponseRequest;
+use App\Http\Requests\UpdateReponseRequest;
 class ReponseController extends Controller
 {
     public function index()
@@ -13,15 +14,16 @@ class ReponseController extends Controller
         return response()->json($reponses);
     }
 
-    public function store(Request $request)
+    public function store(StoreReponseRequest $request)
     {
-        $validatedData = $request->validate([
-            'contenu' => 'required|string',
-            'Id_Questions' => 'required|exists:questions,id',
-        ]);
+        $reponse = Reponse::create($request->validated());
+        return response()->json($reponse, 201);
+    }
 
-        $reponse = Reponse::create($validatedData);
-        return response()->json(['message' => 'Reponse created successfully', 'reponse' => $reponse], 201);
+    public function update(UpdateReponseRequest $request, Reponse $reponse)
+    {
+        $reponse->update($request->validated());
+        return response()->json($reponse, 200);
     }
 
     public function show(Reponse $reponse)
@@ -29,16 +31,6 @@ class ReponseController extends Controller
         return response()->json($reponse);
     }
 
-    public function update(Request $request, Reponse $reponse)
-    {
-        $validatedData = $request->validate([
-            'contenu' => 'sometimes|required|string',
-            'Id_Questions' => 'required|exists:questions,id',
-        ]);
-
-        $reponse->update($validatedData);
-        return response()->json(['message' => 'Reponse updated successfully', 'reponse' => $reponse]);
-    }
 
     public function destroy(Reponse $reponse)
     {

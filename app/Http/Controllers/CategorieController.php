@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Categorie;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCategorieRequest;
+use App\Http\Requests\UpdateCategorieRequest;
 
 class CategorieController extends Controller
 {
@@ -13,33 +15,24 @@ class CategorieController extends Controller
         return response()->json($categories);
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'nom' => 'required|string|max:50',
-            'Id_Tests' => 'required|exists:tests,id',
-        ]);
-
-        $categorie = Categorie::create($validatedData);
-        return response()->json(['message' => 'Categorie created successfully', 'categorie' => $categorie], 201);
-    }
 
     public function show(Categorie $categorie)
     {
         return response()->json($categorie);
     }
 
-    public function update(Request $request, Categorie $categorie)
+    public function store(StoreCategorieRequest $request)
     {
-        $validatedData = $request->validate([
-            'nom' => 'sometimes|required|string|max:50',
-            'Id_Tests' => 'required|exists:tests,id',
-        ]);
-
-        $categorie->update($validatedData);
-        return response()->json(['message' => 'Categorie updated successfully', 'categorie' => $categorie]);
+        $categorie = Categorie::create($request->validated());
+        return response()->json($categorie, 201);
     }
 
+    public function update(UpdateCategorieRequest $request, Categorie $categorie)
+    {
+        $categorie->update($request->validated());
+        return response()->json($categorie, 200);
+    }
+    
     public function destroy(Categorie $categorie)
     {
         $categorie->delete();

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Actualite;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreActualiteRequest;
+use App\Http\Requests\UpdateActualiteRequest;
 
 class ActualiteController extends Controller
 {
@@ -13,35 +15,22 @@ class ActualiteController extends Controller
         return response()->json($actualites);
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'titre' => 'required|string|max:50',
-            'contenu' => 'required|string',
-        ]);
-
-        $actualite = Actualite::create($validatedData);
-        return response()->json(['message' => 'Actualite created successfully', 'actualite' => $actualite], 201);
-    }
 
     public function show(Actualite $actualite)
     {
         return response()->json($actualite);
     }
 
-    public function update(Request $request, Actualite $actualite)
+    public function store(StoreActualiteRequest $request)
     {
-        $validatedData = $request->validate([
-            'titre' => 'sometimes|required|string|max:50',
-            'contenu' => 'required|string',
-        ]);
+        $actualite = Actualite::create($request->validated());
+        return response()->json($actualite, 201);
+    }
 
-        $actualite->update($validatedData);
-        return response()->json(['message
-        
-        
-        
-        ' => 'Actualite updated successfully', 'actualite' => $actualite]);
+    public function update(UpdateActualiteRequest $request, Actualite $actualite)
+    {
+        $actualite->update($request->validated());
+        return response()->json($actualite, 200);
     }
 
     public function destroy(Actualite $actualite)

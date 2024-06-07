@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Offre;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreOffreRequest;
+use App\Http\Requests\UpdateOffreRequest;
 
 class OffreController extends Controller
 {
@@ -13,35 +15,22 @@ class OffreController extends Controller
         return response()->json($offres);
     }
 
-    public function store(Request $request)
+    public function store(StoreOffreRequest $request)
     {
-        $validatedData = $request->validate([
-            'nom' => 'required|string|max:50',
-            'description' => 'nullable|string',
-            'Id_Partenaire' => 'required|exists:partenaires,id',
-        ]);
+        $offre = Offre::create($request->validated());
+        return response()->json($offre, 201);
+    }
 
-        $offre = Offre::create($validatedData);
-        return response()->json(['message' => 'Offre created successfully', 'offre' => $offre], 201);
+    public function update(UpdateOffreRequest $request, Offre $offre)
+    {
+        $offre->update($request->validated());
+        return response()->json($offre, 200);
     }
 
     public function show(Offre $offre)
     {
         return response()->json($offre);
     }
-
-    public function update(Request $request, Offre $offre)
-    {
-        $validatedData = $request->validate([
-            'nom' => 'sometimes|required|string|max:50',
-            'description' => 'nullable|string',
-            'Id_Partenaire' => 'required|exists:partenaires,id',
-        ]);
-
-        $offre->update($validatedData);
-        return response()->json(['message' => 'Offre updated successfully', 'offre' => $offre]);
-    }
-
     public function destroy(Offre $offre)
     {
         $offre->delete();

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\StoreQuestionRequest;
+use App\Http\Requests\UpdateQuestionRequest;
 class QuestionController extends Controller
 {
     public function index()
@@ -13,31 +14,21 @@ class QuestionController extends Controller
         return response()->json($questions);
     }
 
-    public function store(Request $request)
+    public function store(StoreQuestionRequest $request)
     {
-        $validatedData = $request->validate([
-            'contenu' => 'required|string',
-            'Id_Categories' => 'required|exists:categories,id',
-        ]);
+        $question = Question::create($request->validated());
+        return response()->json($question, 201);
+    }
 
-        $question = Question::create($validatedData);
-        return response()->json(['message' => 'Question created successfully', 'question' => $question], 201);
+    public function update(UpdateQuestionRequest $request, Question $question)
+    {
+        $question->update($request->validated());
+        return response()->json($question, 200);
     }
 
     public function show(Question $question)
     {
         return response()->json($question);
-    }
-
-    public function update(Request $request, Question $question)
-    {
-        $validatedData = $request->validate([
-            'contenu' => 'sometimes|required|string',
-            'Id_Categories' => 'required|exists:categories,id',
-        ]);
-
-        $question->update($validatedData);
-        return response()->json(['message' => 'Question updated successfully', 'question' => $question]);
     }
 
     public function destroy(Question $question)

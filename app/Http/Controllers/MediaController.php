@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Media;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreMediaRequest;
+use App\Http\Requests\UpdateMediaRequest;
 
 class MediaController extends Controller
 {
@@ -13,33 +15,21 @@ class MediaController extends Controller
         return response()->json($medias);
     }
 
-    public function store(Request $request)
+    public function store(StoreMediaRequest $request)
     {
-        $validatedData = $request->validate([
-            'url' => 'required|string|max:50',
-            'type' => 'required|string',
-            'Id_Actualites' => 'nullable|exists:actualites,id',
-        ]);
+        $media = Media::create($request->validated());
+        return response()->json($media, 201);
+    }
 
-        $media = Media::create($validatedData);
-        return response()->json(['message' => 'Media created successfully', 'media' => $media], 201);
+    public function update(UpdateMediaRequest $request, Media $media)
+    {
+        $media->update($request->validated());
+        return response()->json($media, 200);
     }
 
     public function show(Media $media)
     {
         return response()->json($media);
-    }
-
-    public function update(Request $request, Media $media)
-    {
-        $validatedData = $request->validate([
-            'url' => 'sometimes|required|string|max:50',
-            'type' => 'required|string',
-            'Id_Actualites' => 'nullable|exists:actualites,id',
-        ]);
-
-        $media->update($validatedData);
-        return response()->json(['message' => 'Media updated successfully', 'media' => $media]);
     }
 
     public function destroy(Media $media)

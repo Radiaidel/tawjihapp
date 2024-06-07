@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Formation;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreFormationRequest;
+use App\Http\Requests\UpdateFormationRequest;
 
 class FormationController extends Controller
 {
@@ -13,35 +15,24 @@ class FormationController extends Controller
         return response()->json($formations);
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'titre' => 'required|string|max:50',
-            'description' => 'nullable|string',
-            'Id_Secteur_Metier' => 'required|exists:secteur_metiers,id',
-        ]);
-
-        $formation = Formation::create($validatedData);
-        return response()->json(['message' => 'Formation created successfully', 'formation' => $formation], 201);
-    }
 
     public function show(Formation $formation)
     {
         return response()->json($formation);
     }
 
-    public function update(Request $request, Formation $formation)
+    public function store(StoreFormationRequest $request)
     {
-        $validatedData = $request->validate([
-            'titre' => 'sometimes|required|string|max:50',
-            'description' => 'nullable|string',
-            'Id_Secteur_Metier' => 'required|exists:secteur_metiers,id',
-        ]);
-
-        $formation->update($validatedData);
-        return response()->json(['message' => 'Formation updated successfully', 'formation' => $formation]);
+        $formation = Formation::create($request->validated());
+        return response()->json($formation, 201);
     }
 
+    public function update(UpdateFormationRequest $request, Formation $formation)
+    {
+        $formation->update($request->validated());
+        return response()->json($formation, 200);
+    }
+    
     public function destroy(Formation $formation)
     {
         $formation->delete();

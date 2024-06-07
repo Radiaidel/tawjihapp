@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Evenement;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreEvenementRequest;
+use App\Http\Requests\UpdateEvenementRequest;
 
 class EvenementController extends Controller
 {
@@ -13,37 +15,23 @@ class EvenementController extends Controller
         return response()->json($evenements);
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'titre' => 'required|string|max:50',
-            'description' => 'nullable|string',
-            'date_heure' => 'required',
-            'adresse' => 'required|string',
-        ]);
-
-        $evenement = Evenement::create($validatedData);
-        return response()->json(['message' => 'Evenement created successfully', 'evenement' => $evenement], 201);
-    }
-
     public function show(Evenement $evenement)
     {
         return response()->json($evenement);
     }
 
-    public function update(Request $request, Evenement $evenement)
+    public function store(StoreEvenementRequest $request)
     {
-        $validatedData = $request->validate([
-            'titre' => 'sometimes|required|string|max:50',
-            'description' => 'nullable|string',
-            'date_heure' => 'required|date',
-            'adresse' => 'required|string|max:50',
-        ]);
-
-        $evenement->update($validatedData);
-        return response()->json(['message' => 'Evenement updated successfully', 'evenement' => $evenement]);
+        $evenement = Evenement::create($request->validated());
+        return response()->json($evenement, 201);
     }
 
+    public function update(UpdateEvenementRequest $request, Evenement $evenement)
+    {
+        $evenement->update($request->validated());
+        return response()->json($evenement, 200);
+    }
+    
     public function destroy(Evenement $evenement)
     {
         $evenement->delete();

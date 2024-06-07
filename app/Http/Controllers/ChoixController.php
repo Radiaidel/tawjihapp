@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Choix;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreChoixRequest;
+use App\Http\Requests\UpdateChoixRequest;
 
 class ChoixController extends Controller
 {
@@ -13,31 +15,22 @@ class ChoixController extends Controller
         return response()->json($choix);
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'contenu' => 'required|string',
-            'Id_Questions' => 'required|exists:questions,id',
-        ]);
-
-        $choix = Choix::create($validatedData);
-        return response()->json(['message' => 'Choix created successfully', 'choix' => $choix], 201);
-    }
 
     public function show(Choix $choix)
     {
         return response()->json($choix);
     }
 
-    public function update(Request $request, Choix $choix)
+    public function store(StoreChoixRequest $request)
     {
-        $validatedData = $request->validate([
-            'contenu' => 'sometimes|required|string',
-            'Id_Questions' => 'required|exists:questions,id',
-        ]);
+        $choix = Choix::create($request->validated());
+        return response()->json($choix, 201);
+    }
 
-        $choix->update($validatedData);
-        return response()->json(['message' => 'Choix updated successfully', 'choix' => $choix]);
+    public function update(UpdateChoixRequest $request, Choix $choix)
+    {
+        $choix->update($request->validated());
+        return response()->json($choix, 200);
     }
 
     public function destroy(Choix $choix)

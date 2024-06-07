@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Resultat;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\StoreResultatRequest;
+use App\Http\Requests\UpdateResultatRequest;
 class ResultatController extends Controller
 {
     public function index()
@@ -13,17 +14,16 @@ class ResultatController extends Controller
         return response()->json($resultats);
     }
 
-    public function store(Request $request)
+    public function store(StoreResultatRequest $request)
     {
-        $validatedData = $request->validate([
-            'score' => 'required|numeric',
-            'date_passation' => 'required|date',
-            'Id_Tests' => 'required|exists:tests,id',
-            'Id_Utilisateur' => 'required|exists:utilisateurs,id',
-        ]);
+        $resultat = Resultat::create($request->validated());
+        return response()->json($resultat, 201);
+    }
 
-        $resultat = Resultat::create($validatedData);
-        return response()->json(['message' => 'Resultat created successfully', 'resultat' => $resultat], 201);
+    public function update(UpdateResultatRequest $request, Resultat $resultat)
+    {
+        $resultat->update($request->validated());
+        return response()->json($resultat, 200);
     }
 
     public function show(Resultat $resultat)
@@ -31,18 +31,6 @@ class ResultatController extends Controller
         return response()->json($resultat);
     }
 
-    public function update(Request $request, Resultat $resultat)
-    {
-        $validatedData = $request->validate([
-            'score' => 'sometimes|required|numeric',
-            'date_passation' => 'required|date',
-            'Id_Tests' => 'required|exists:tests,id',
-            'Id_Utilisateur' => 'required|exists:utilisateurs,id',
-        ]);
-
-        $resultat->update($validatedData);
-        return response()->json(['message' => 'Resultat updated successfully', 'resultat' => $resultat]);
-    }
 
     public function destroy(Resultat $resultat)
     {

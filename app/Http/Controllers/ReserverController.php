@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Reserver;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreReserverRequest;
+use App\Http\Requests\UpdateReserverRequest;
 
 class ReserverController extends Controller
 {
@@ -13,33 +15,21 @@ class ReserverController extends Controller
         return response()->json($reservations);
     }
 
-    public function store(Request $request)
+    public function store(StoreReserverRequest $request)
     {
-        $validatedData = $request->validate([
-            'date_reservation' => 'required|date',
-            'Id_Utilisateur' => 'required|exists:utilisateurs,id',
-            'Id_Service' => 'required|exists:services,id',
-        ]);
+        $reserver = Reserver::create($request->validated());
+        return response()->json($reserver, 201);
+    }
 
-        $reservation = Reserver::create($validatedData);
-        return response()->json(['message' => 'Reservation created successfully', 'reservation' => $reservation], 201);
+    public function update(UpdateReserverRequest $request, Reserver $reserver)
+    {
+        $reserver->update($request->validated());
+        return response()->json($reserver, 200);
     }
 
     public function show(Reserver $reservation)
     {
         return response()->json($reservation);
-    }
-
-    public function update(Request $request, Reserver $reservation)
-    {
-        $validatedData = $request->validate([
-            'date_reservation' => 'required|date',
-            'Id_Utilisateur' => 'required|exists:utilisateurs,id',
-            'Id_Service' => 'required|exists:services,id',
-        ]);
-
-        $reservation->update($validatedData);
-        return response()->json(['message' => 'Reservation updated successfully', 'reservation' => $reservation]);
     }
 
     public function destroy(Reserver $reservation)

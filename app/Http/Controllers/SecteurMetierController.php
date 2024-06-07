@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\SecteurMetier;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreSecteurMetierRequest;
+use App\Http\Requests\UpdateSecteurMetierRequest;
 
 class SecteurMetierController extends Controller
 {
@@ -13,35 +15,24 @@ class SecteurMetierController extends Controller
         return response()->json($secteurMetiers);
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'icone' => 'required|string|max:50',
-            'titre' => 'required|string|max:50',
-            'description' => 'nullable|string',
-        ]);
-
-        $secteurMetier = SecteurMetier::create($validatedData);
-        return response()->json(['message' => 'Secteur Metier created successfully', 'secteurMetier' => $secteurMetier], 201);
-    }
-
     public function show(SecteurMetier $secteurMetier)
     {
         return response()->json($secteurMetier);
     }
 
-    public function update(Request $request, SecteurMetier $secteurMetier)
-    {
-        $validatedData = $request->validate([
-            'icone' => 'sometimes|required|string|max:50',
-            'titre' => 'sometimes|required|string|max:50',
-            'description' => 'nullable|string',
-        ]);
 
-        $secteurMetier->update($validatedData);
-        return response()->json(['message' => 'Secteur Metier updated successfully', 'secteurMetier' => $secteurMetier]);
+    public function store(StoreSecteurMetierRequest $request)
+    {
+        $secteurMetier = SecteurMetier::create($request->validated());
+        return response()->json($secteurMetier, 201);
     }
 
+    public function update(UpdateSecteurMetierRequest $request, SecteurMetier $secteurMetier)
+    {
+        $secteurMetier->update($request->validated());
+        return response()->json($secteurMetier, 200);
+    }
+    
     public function destroy(SecteurMetier $secteurMetier)
     {
         $secteurMetier->delete();

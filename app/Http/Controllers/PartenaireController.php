@@ -1,8 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Partenaire;
+use App\Http\Requests\StorePartenaireRequest;
+use App\Http\Requests\UpdatePartenaireRequest;
 use Illuminate\Http\Request;
 
 class PartenaireController extends Controller
@@ -13,15 +14,9 @@ class PartenaireController extends Controller
         return response()->json($partenaires);
     }
 
-    public function store(Request $request)
+    public function store(StorePartenaireRequest $request)
     {
-        $validatedData = $request->validate([
-            'date_creation' => 'required|date',
-            'statut' => 'required|string',
-            'Id_Utilisateur' => 'required|exists:utilisateurs,id|unique:partenaires,Id_Utilisateur',
-        ]);
-
-        $partenaire = Partenaire::create($validatedData);
+        $partenaire = Partenaire::create($request->validated());
         return response()->json(['message' => 'Partenaire created successfully', 'partenaire' => $partenaire], 201);
     }
 
@@ -30,15 +25,9 @@ class PartenaireController extends Controller
         return response()->json($partenaire);
     }
 
-    public function update(Request $request, Partenaire $partenaire)
+    public function update(UpdatePartenaireRequest $request, Partenaire $partenaire)
     {
-        $validatedData = $request->validate([
-            'date_creation' => 'required|date',
-            'statut' => 'required|string',
-            'Id_Utilisateur' => 'required|exists:utilisateurs,id|unique:partenaires,Id_Utilisateur,' . $partenaire->id,
-        ]);
-
-        $partenaire->update($validatedData);
+        $partenaire->update($request->validated());
         return response()->json(['message' => 'Partenaire updated successfully', 'partenaire' => $partenaire]);
     }
 
@@ -48,4 +37,3 @@ class PartenaireController extends Controller
         return response()->json(['message' => 'Partenaire deleted successfully']);
     }
 }
-

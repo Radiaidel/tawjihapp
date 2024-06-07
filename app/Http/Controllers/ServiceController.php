@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreServiceRequest;
+use App\Http\Requests\UpdateServiceRequest;
 
 class ServiceController extends Controller
 {
@@ -31,18 +33,6 @@ class ServiceController extends Controller
         return response()->json($service);
     }
 
-    public function update(Request $request, Service $service)
-    {
-        $validatedData = $request->validate([
-            'nom' => 'sometimes|required|string|max:50',
-            'description' => 'nullable|string',
-            'tarif' => 'required|numeric',
-            'Id_Categorie_Services' => 'required|exists:categorie_services,id',
-        ]);
-
-        $service->update($validatedData);
-        return response()->json(['message' => 'Service updated successfully', 'service' => $service]);
-    }
 
     public function destroy(Service $service)
     {
