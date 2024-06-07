@@ -14,8 +14,7 @@ class UpdateCategorieServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'titre' => 'nullable|string|max:50',
-            'description' => 'nullable|string',
+            'nom' => 'nullable|string',
         ];
     }
 }

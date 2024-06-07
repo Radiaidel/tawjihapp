@@ -13,9 +13,8 @@ class UpdateActualiteRequest extends FormRequest
     public function rules()
     {
         return [
-            'titre' => 'nullable|string|max:50',
+            'titre' => 'nullable|string',
             'contenu' => 'nullable|string',
-            'date_publication' => 'nullable|date',
         ];
     }
 }

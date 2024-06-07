@@ -14,8 +14,7 @@ class StoreCategorieServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'titre' => 'required|string|max:50',
-            'description' => 'nullable|string',
+            'nom' => 'required|string',
         ];
     }
 }

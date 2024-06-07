@@ -15,7 +15,6 @@ class StoreActualiteRequest extends FormRequest
         return [
             'titre' => 'required|string|max:50',
             'contenu' => 'required|string',
-            'date_publication' => 'required|date',
         ];
     }
 }
